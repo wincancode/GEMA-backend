@@ -1,8 +1,17 @@
-import { config } from 'dotenv';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import express, {Response, Request} from 'express';
+import cors from 'cors'
 
-config({ path: '.env' }); // or .env.local
+const app = express();
+app.use(cors());
+const port = process.env.PORT || 3000;
 
-const client = postgres(process.env.DATABASE_URL!);
-export const db = drizzle({ client: client, casing: 'snake_case' });
+app.use(express.json());
+app.use(express.urlencoded());
+
+app.get('/', (_: Request, res: Response) => {
+    res.send("Hola desde un backend de TypeScript + Express + Drizzle");
+})
+
+app.listen(port, () => {
+    console.log('Server is running in ' + port);
+})
