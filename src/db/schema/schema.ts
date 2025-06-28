@@ -137,19 +137,20 @@ export const Equipment = pgTable('Equipment', {
 export const EquipmentOperationalLocation = pgTable(
 	'Equipment_operational_location',
 	{
-		id: serial().primaryKey(),
-		equipmentId: uuid()
+		equipmentUuid: uuid()
 			.notNull()
 			.references(() => Equipment.uuid, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade'
-			}),
-		locationId: text()
+			})
+			.primaryKey(),
+		locationTechnicalCode: text()
 			.notNull()
 			.references(() => TechnicalLocation.technicalCode, {
 				onDelete: 'set null',
 				onUpdate: 'cascade'
-			}),
+			})
+			.primaryKey(),
 		...timestamps
 	}
 );
