@@ -50,6 +50,10 @@ export const Technician = pgTable('Technician', {
 			onDelete: 'cascade',
 			onUpdate: 'cascade'
 		}),
+	technicalTeamId: serial().references(() => TechnicalTeam.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade'
+	}),
 	...timestamps
 });
 
@@ -58,6 +62,10 @@ export const TechnicalTeam = pgTable('Technical_team', {
 	name: text().notNull(),
 	speciality: text().references(() => TechnicianSpecialities.codeName, {
 		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	}),
+	leaderId: uuid().references(() => Technician.uuid, {
+		onDelete: 'set null',
 		onUpdate: 'cascade'
 	}),
 	...timestamps

@@ -25,6 +25,19 @@ export const technicalTeamController = {
 		} catch (error) {
 			return res.status(500).json({ error: "internal server error", details: error.message })
 		}
+	},
+
+	async getByLeader(req: Request, res: Response) {
+		try {
+			const {leaderID} = req.params;
+			const result = await db
+				.select()
+				.from(TechnicalTeam)
+				.where(eq(TechnicalTeam.leaderId, leaderID))
+			return res.status(200).json(result);
+		} catch (error) {
+			return res.status(500).json({ error: "internal server error", details: error.message })
+		}
 	}
 }
 
