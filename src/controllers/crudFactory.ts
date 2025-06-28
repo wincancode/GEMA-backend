@@ -29,7 +29,7 @@ const userBaseCrud = createCrud({
 	objectName: 'User'
 });
 
-userBaseCrud.getByPk
+userBaseCrud.getByPk;
 
 export function createCrud<S extends ZodSchema>({
 	table,

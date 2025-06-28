@@ -5,9 +5,13 @@ import {
 	TechnicalLocationTypes,
 	Equipment
 } from '../db/schema/schema';
-import { LocationTypeSchema } from '../db/schema/validationSchema';
+import {
+	LocationTypeSchema,
+	TechnicalLocationSchema
+} from '../db/schema/validationSchema';
 import { eq, and, isNull } from 'drizzle-orm';
 import { Request, Response } from 'express';
+import { createCrud } from './crudFactory';
 
 // Tipos de ubicaciones tecnicas
 export const createLocationType = async (req: Request, res: Response) => {
@@ -46,3 +50,9 @@ export const getLocationTypes = async (req: Request, res: Response) => {
 		res.status(500).json({ error: 'Error fetching technical location types' });
 	}
 };
+
+export const technicalLocationController = createCrud({
+	table: TechnicalLocation,
+	validationSchema: TechnicalLocationSchema,
+	objectName: 'TechnicalLocation'
+});

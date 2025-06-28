@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { technicalTeamController } from '../controllers/technicalTeam.controller';
+
+const router = Router();
+
+router.get('/', technicalTeamController.getAll);
+router.get('/:id', technicalTeamController.getByPk);
+router.post('/', technicalTeamController.insert);
+router.put('/:id', technicalTeamController.update);
+router.delete('/:id', technicalTeamController.delete);
+
+export default router;
