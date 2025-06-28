@@ -14,30 +14,16 @@ const baseTechnicalTeamController = createCrud({
 export const technicalTeamController = {
 	...baseTechnicalTeamController,
 
-	async getBySpeciality(req: Request, res: Response) {
-		try {
-			const {speciality} = req.params;
-			const result = await db
-				.select()
-				.from(TechnicalTeam)
-				.where(eq(TechnicalTeam.speciality, speciality))
-			return res.status(200).json(result);
-		} catch (error) {
-			return res.status(500).json({ error: "internal server error", details: error.message })
-		}
+	async getBySpeciality(speciality: string) {
+		return db.select()
+			.from(TechnicalTeam)
+			.where(eq(TechnicalTeam.speciality, speciality))
 	},
 
-	async getByLeader(req: Request, res: Response) {
-		try {
-			const {leaderID} = req.params;
-			const result = await db
-				.select()
-				.from(TechnicalTeam)
-				.where(eq(TechnicalTeam.leaderId, leaderID))
-			return res.status(200).json(result);
-		} catch (error) {
-			return res.status(500).json({ error: "internal server error", details: error.message })
-		}
+	async getByLeader(leaderId: string) {
+		return db.select()
+			.from(TechnicalTeam)
+			.where(eq(TechnicalTeam.leaderId, leaderId))
 	}
 }
 
