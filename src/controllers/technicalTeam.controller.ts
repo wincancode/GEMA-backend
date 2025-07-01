@@ -14,16 +14,27 @@ const baseTechnicalTeamController = createCrud({
 export const technicalTeamController = {
 	...baseTechnicalTeamController,
 
-	async getBySpeciality(speciality: string) {
-		return db.select()
+	async getBySpeciality(req: Request, res: Response) {
+		const speciality = req.params.speciality;
+		try {
+			const result = await db.select()
 			.from(TechnicalTeam)
 			.where(eq(TechnicalTeam.speciality, speciality))
+			res.status(200).json(result);
+		} catch (error) {
+			res.status(500).json({error: error.message});
+		}
 	},
 
-	async getByLeader(leaderId: string) {
-		return db.select()
+	async getByLeader(req: Request, res: Response) {
+		const leaderId = req.params.leaderId;
+		try {
+			const result = await db.select()
 			.from(TechnicalTeam)
 			.where(eq(TechnicalTeam.leaderId, leaderId))
+		} catch (error) {
+			res.status(500).json({error: error.message});
+		}
 	}
 }
 
