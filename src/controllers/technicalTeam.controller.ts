@@ -19,7 +19,7 @@ export const technicalTeamController = {
 		try {
 			const result = await db.select()
 			.from(TechnicalTeam)
-			.where(eq(TechnicalTeam.speciality, speciality))
+			.where(eq(TechnicalTeam.speciality, speciality as any))
 			res.status(200).json(result);
 		} catch (error) {
 			res.status(500).json({error: error.message});
