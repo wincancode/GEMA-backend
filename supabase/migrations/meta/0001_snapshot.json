@@ -1,5 +1,5 @@
 {
-  "id": "3d042361-08ab-46bc-a8b5-f277a07ac215",
+  "id": "78e921dd-c04f-4876-9c56-efe1d2e5b3b5",
   "prevId": "4e079495-ea98-45ba-bd29-0d68f225dd24",
   "version": "7",
   "dialect": "postgresql",
@@ -619,7 +619,8 @@
         },
         "speciality": {
           "name": "speciality",
-          "type": "text",
+          "type": "technician_speciality",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -651,19 +652,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "Technical_team_speciality_Technician_specialties_codeName_fk": {
-          "name": "Technical_team_speciality_Technician_specialties_codeName_fk",
-          "tableFrom": "Technical_team",
-          "tableTo": "Technician_specialties",
-          "columnsFrom": [
-            "speciality"
-          ],
-          "columnsTo": [
-            "codeName"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
         "Technical_team_leaderId_Technician_uuid_fk": {
           "name": "Technical_team_leaderId_Technician_uuid_fk",
           "tableFrom": "Technical_team",
@@ -708,7 +696,8 @@
         },
         "speciality": {
           "name": "speciality",
-          "type": "text",
+          "type": "technician_speciality",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -753,19 +742,6 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "Technician_speciality_Technician_specialties_codeName_fk": {
-          "name": "Technician_speciality_Technician_specialties_codeName_fk",
-          "tableFrom": "Technician",
-          "tableTo": "Technician_specialties",
-          "columnsFrom": [
-            "speciality"
-          ],
-          "columnsTo": [
-            "codeName"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
         "Technician_technicalTeamId_Technical_team_id_fk": {
           "name": "Technician_technicalTeamId_Technical_team_id_fk",
           "tableFrom": "Technician",
@@ -790,31 +766,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.Technician_specialties": {
-      "name": "Technician_specialties",
-      "schema": "",
-      "columns": {
-        "codeName": {
-          "name": "codeName",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -947,6 +898,17 @@
         "technician",
         "coordinator",
         "admin"
+      ]
+    },
+    "public.technician_speciality": {
+      "name": "technician_speciality",
+      "schema": "public",
+      "values": [
+        "electrician",
+        "mechanic",
+        "it",
+        "biomedical",
+        "other"
       ]
     }
   },

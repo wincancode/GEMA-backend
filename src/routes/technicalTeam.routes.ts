@@ -8,7 +8,8 @@ router.get('/:id', technicalTeamController.getByPk);
 router.post('/', technicalTeamController.insert);
 router.put('/:id', technicalTeamController.update);
 router.delete('/:id', technicalTeamController.delete);
-// router.get('/speciality/:speciality', technicalTeamController.getBySpeciality);
-// router.get('/leader/:leaderID', technicalTeamController.getByLeader);
+router.get('speciality/:speciality', technicalTeamController.getBySpeciality);
+router.get('leader/:leaderId', technicalTeamController.getByLeader);
+
 
 export default router;

@@ -18,16 +18,24 @@ export const UserSchema = z.object({
 	deletedAt: z.date().optional()
 });
 
-export const TechnicianSpecialitiesSchema = z.object({
-	codeName: z.string().min(1),
-	description: z.string().optional()
-});
+// export const TechnicianSpecialitiesSchema = z.object({
+//   codeName: z.string().min(1),
+//   description: z.string().optional()
+// });
+
+export const technicianSpecialityEnum = z.enum([
+	'Electricista',
+	'Mecanica',
+	'Logistica',
+	'Electronica'
+]);
 
 export const TechnicianSchema = z.object({
 	uuid: z.string().uuid().optional(),
 	personalId: z.string().min(1),
 	contact: z.string().min(1),
-	speciality: z.string().min(1),
+	speciality: technicianSpecialityEnum,
+	technicalTeamId: z.number().int().optional(),
 	updatedAt: z.date().optional(),
 	createdAt: z.date().optional(),
 	deletedAt: z.date().optional()
@@ -36,7 +44,7 @@ export const TechnicianSchema = z.object({
 export const TechnicalTeamSchema = z.object({
 	id: z.number().int().optional(),
 	name: z.string().min(1),
-	speciality: z.string().optional(),
+	speciality: technicianSpecialityEnum.optional(),
 	updatedAt: z.date().optional(),
 	createdAt: z.date().optional(),
 	deletedAt: z.date().optional()

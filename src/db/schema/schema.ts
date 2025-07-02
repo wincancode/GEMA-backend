@@ -30,10 +30,17 @@ export const User = pgTable('User', {
 	...timestamps
 });
 
-export const TechnicianSpecialities = pgTable('Technician_specialties', {
-	codeName: text().primaryKey(),
-	description: text()
-});
+// export const TechnicianSpecialities = pgTable('Technician_specialties', {
+// 	codeName: text().primaryKey(),
+// 	description: text()
+// });
+
+export const technicianSpecialityEnum = pgEnum('technician_speciality', [
+	'Electricista',
+	'Mecanica',
+	'Logistica',
+	'Electronica'
+]);
 
 export const Technician = pgTable('Technician', {
 	uuid: uuid()
@@ -44,12 +51,11 @@ export const Technician = pgTable('Technician', {
 		}),
 	personalId: text().notNull().unique(),
 	contact: text().notNull(),
-	speciality: text()
-		.notNull()
-		.references(() => TechnicianSpecialities.codeName, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade'
-		}),
+	speciality: technicianSpecialityEnum().notNull(),
+	// .references(() => TechnicianSpecialities.codeName, {
+	// 	onDelete: 'cascade',
+	// 	onUpdate: 'cascade'
+	// }),
 	technicalTeamId: serial().references(() => TechnicalTeam.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade'
@@ -60,10 +66,11 @@ export const Technician = pgTable('Technician', {
 export const TechnicalTeam = pgTable('Technical_team', {
 	id: serial().primaryKey(),
 	name: text().notNull(),
-	speciality: text().references(() => TechnicianSpecialities.codeName, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade'
-	}),
+	speciality: technicianSpecialityEnum(),
+	// .references(() => TechnicianSpecialities.codeName, {
+	// 	onDelete: 'cascade',
+	// 	onUpdate: 'cascade'
+	// }),
 	leaderId: uuid().references(() => Technician.uuid, {
 		onDelete: 'set null',
 		onUpdate: 'cascade'
