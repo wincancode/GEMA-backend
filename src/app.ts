@@ -11,6 +11,7 @@ import equipmentOperationalLocationRoutes from './routes/equipmentOperationalLoc
 import reportOriginRoutes from './routes/reportOrigin.routes';
 import reportRoutes from './routes/report.routes';
 import reportUpdateRoutes from './routes/reportUpdate.routes';
+import enumRoutes from './routes/enum.routes';
 
 const app = express();
 app.use(cors());
@@ -31,6 +32,7 @@ app.use(
 app.use('/api/report-origins', reportOriginRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/report-updates', reportUpdateRoutes);
+app.use('/api/enums', enumRoutes);
 
 app.get('/', (_: Request, res: Response) => {
 	res.send('Hola desde un backend de TypeScript + Express + Drizzle');
