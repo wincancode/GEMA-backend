@@ -38,11 +38,14 @@ export function createCrud<S extends ZodSchema>({
 }: CrudFactoryOptions<S>) {
 	return {
 		async insert(req: Request, res: Response) {
+			console.log(`[${objectName}] Insert request:`, req.body);
 			try {
 				const validated = validationSchema.parse(req.body);
 				const result = await db.insert(table).values(validated).returning();
+				console.log(`[${objectName}] Insert result:`, result[0]);
 				res.status(201).json(result[0]);
 			} catch (error) {
+				console.error(`[${objectName}] Insert error:`, error);
 				if (error instanceof z.ZodError) {
 					res.status(400).json({
 						error: 'Validation Error for ' + objectName,
@@ -58,14 +61,17 @@ export function createCrud<S extends ZodSchema>({
 		},
 
 		async getByPk(req: Request, res: Response) {
+			console.log(`[${objectName}] GetByPk request:`, req.params);
 			try {
 				const pk = req.params;
 				const result = await db
 					.select()
 					.from(table)
 					.where(buildPkWhere(table, pk));
+				console.log(`[${objectName}] GetByPk result:`, result[0] || null);
 				res.status(200).json(result[0] || null);
 			} catch (error) {
+				console.error(`[${objectName}] GetByPk error:`, error);
 				res.status(500).json({
 					error: 'Error fetching data for ' + objectName,
 					details: error.message
@@ -74,10 +80,13 @@ export function createCrud<S extends ZodSchema>({
 		},
 
 		async getAll(req: Request, res: Response) {
+			console.log(`[${objectName}] GetAll request`);
 			try {
 				const result = await db.select().from(table);
+				console.log(`[${objectName}] GetAll result:`, result);
 				res.status(200).json(result);
 			} catch (error) {
+				console.error(`[${objectName}] GetAll error:`, error);
 				res.status(500).json({
 					error: 'Error fetching all data for ' + objectName,
 					details: error.message
@@ -86,6 +95,7 @@ export function createCrud<S extends ZodSchema>({
 		},
 
 		async update(req: Request, res: Response) {
+			console.log(`[${objectName}] Update request:`, { params: req.params, body: req.body });
 			try {
 				const pk = req.params;
 				const validated = validationSchema.parse(req.body);
@@ -95,8 +105,10 @@ export function createCrud<S extends ZodSchema>({
 					.set(validated)
 					.where(where)
 					.returning();
+				console.log(`[${objectName}] Update result:`, result[0] || null);
 				res.status(200).json(result[0] || null);
 			} catch (error) {
+				console.error(`[${objectName}] Update error:`, error);
 				if (error instanceof z.ZodError) {
 					res.status(400).json({
 						error: 'Validation Error for ' + objectName,
@@ -112,11 +124,14 @@ export function createCrud<S extends ZodSchema>({
 		},
 
 		async delete(req: Request, res: Response) {
+			console.log(`[${objectName}] Delete request:`, req.params);
 			try {
 				const where = buildPkWhere(table, req.params);
 				const result = await db.delete(table).where(where).returning();
+				console.log(`[${objectName}] Delete result:`, result[0] || null);
 				res.status(200).json(result[0] || null);
 			} catch (error) {
+				console.error(`[${objectName}] Delete error:`, error);
 				res.status(500).json({
 					error: 'Error deleting data for ' + objectName,
 					details: error.message

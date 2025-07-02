@@ -5,7 +5,8 @@ import {
 	serial,
 	text,
 	timestamp,
-	pgEnum
+	pgEnum,
+	primaryKey
 } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm/sql/sql';
 
@@ -104,14 +105,14 @@ export const TechnicalLocation = pgTable('Technical_location', {
 });
 
 export const EquipmentStateEnum = pgEnum('equipment_state', [
-	'installed',
-	'in_maintenance',
-	'maintenance_pending',
-	'in_repair',
-	'repair_pending',
-	'in_stock',
-	'decommissioned',
-	'transfer_pending'
+	'instalado',
+	'en_mantenimiento',
+	'mantenimiento_pendiente',
+	'en_reparaciones',
+	'reparaciones_pendientes',
+	'en_inventario',
+	'descomisionado',
+	'transferencia_pendiente'
 ]);
 
 export const Brand = pgTable('Brand', {
@@ -127,7 +128,7 @@ export const Equipment = pgTable('Equipment', {
 	name: text().notNull(),
 	serialNumber: text().notNull().unique(),
 	description: text(),
-	state: EquipmentStateEnum().notNull().default('in_stock'),
+	state: EquipmentStateEnum().notNull().default('en_inventario'),
 	dependsOn: uuid().references(() => Equipment.uuid, {
 		onDelete: 'set null',
 		onUpdate: 'cascade'
@@ -157,17 +158,20 @@ export const EquipmentOperationalLocation = pgTable(
 			.references(() => Equipment.uuid, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade'
-			})
-			.primaryKey(),
+			}),
 		locationTechnicalCode: text()
 			.notNull()
 			.references(() => TechnicalLocation.technicalCode, {
 				onDelete: 'set null',
 				onUpdate: 'cascade'
-			})
-			.primaryKey(),
+			}),
+
 		...timestamps
-	}
+	},
+
+	(table) => ({
+		pk: primaryKey(table.equipmentUuid, table.locationTechnicalCode)
+	})
 );
 
 export const ReportOriginSourceEnum = pgEnum('Report_Origin_Source', [
