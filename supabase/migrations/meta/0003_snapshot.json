@@ -1,6 +1,6 @@
 {
-  "id": "46f4c04f-b24c-421b-8e76-f3ac25b8d020",
-  "prevId": "78e921dd-c04f-4876-9c56-efe1d2e5b3b5",
+  "id": "d4cab7e3-3641-4ec0-be09-05bbf5aee4e8",
+  "prevId": "46f4c04f-b24c-421b-8e76-f3ac25b8d020",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -207,13 +207,13 @@
         "equipmentUuid": {
           "name": "equipmentUuid",
           "type": "uuid",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "locationTechnicalCode": {
           "name": "locationTechnicalCode",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "updatedAt": {
@@ -265,7 +265,15 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "Equipment_operational_location_equipmentUuid_locationTechnicalCode_pk": {
+          "name": "Equipment_operational_location_equipmentUuid_locationTechnicalCode_pk",
+          "columns": [
+            "equipmentUuid",
+            "locationTechnicalCode"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},

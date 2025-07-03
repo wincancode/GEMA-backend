@@ -10,7 +10,5 @@ const baseTechnicalLocationTypesController = createCrud({
 });
 
 export const technicalLocationTypesController = {
-	...baseTechnicalLocationTypesController,
-
-	
+	...baseTechnicalLocationTypesController,	
 }
