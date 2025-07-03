@@ -36,10 +36,7 @@ export const User = pgTable('User', {
 // });
 
 export const technicianSpecialityEnum = pgEnum('technician_speciality', [
-	'Electricista',
-	'Mecanica',
-	'Logistica',
-	'Electronica'
+	'Electricidad', 'Refrigeracion', 'Iluminacion', 'Pintura', 'Protocolo', 'IT'
 ]);
 
 export const Technician = pgTable('Technician', {

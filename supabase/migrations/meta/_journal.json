@@ -15,6 +15,13 @@
       "when": 1751416146618,
       "tag": "0001_flippant_nightshade",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751481099798,
+      "tag": "0002_sudden_namor",
+      "breakpoints": true
     }
   ]
 }
