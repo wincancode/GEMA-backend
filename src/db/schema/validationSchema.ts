@@ -58,14 +58,14 @@ export const TechnicalLocationSchema = z.object({
 });
 
 export const EquipmentStateEnumSchema = z.enum([
-	'installed',
-	'in_maintenance',
-	'maintenance_pending',
-	'in_repair',
-	'repair_pending',
-	'in_stock',
-	'decommissioned',
-	'transfer_pending'
+	'instalado',
+	'en_mantenimiento',
+	'mantenimiento_pendiente',
+	'en_reparaciones',
+	'reparaciones_pendientes',
+	'en_inventario',
+	'descomisionado',
+	'transferencia_pendiente'
 ]);
 
 export const BrandSchema = z.object({
