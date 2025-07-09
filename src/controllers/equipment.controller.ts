@@ -20,7 +20,11 @@
  */
 
 import { createCrud } from './crudFactory';
-import { Equipment, TechnicalLocation, EquipmentOperationalLocation } from '../db/schema/schema';
+import {
+	Equipment,
+	TechnicalLocation,
+	EquipmentOperationalLocation
+} from '../db/schema/schema';
 import { EquipmentSchema } from '../db/schema/validationSchema';
 import { eq, ne, and, isNull } from 'drizzle-orm';
 import { Request, Response } from 'express';
@@ -50,13 +54,13 @@ const baseEquipmentController = createCrud({
  */
 export const equipmentController = {
 	...baseEquipmentController,
-	
+
 	/**
 	 * Asigna una ubicación técnica a un equipo
 	 *
-	 * Endpoint: POST /api/equipment/assign-technical-location
+	 * Endpoint: PUT /api/equipment/assign/technicalLocation/:equipmentId/:technicalLocationId
 	 *
-	 * Recibe en el body:
+	 * Recibe en los params:
 	 * - equipmentId: UUID del equipo
 	 * - technicalLocationId: Código técnico de la ubicación
 	 *
@@ -65,24 +69,28 @@ export const equipmentController = {
 	 * Responde 200 si la asignación es exitosa, 500 si hay error.
 	 */
 	async assignTechnicalLocation(req: Request, res: Response) {
-		const { equipmentId, technicalLocationId } = req.body;
+		const { equipmentId, technicalLocationId } = req.params;
 		try {
 			await db
 				.update(Equipment)
 				.set({ technicalLocation: technicalLocationId })
 				.where(eq(Equipment.uuid, equipmentId));
-			res.status(200).json({ message: 'Equipo asignado a ubicación técnica correctamente' });
+			res
+				.status(200)
+				.json({ message: 'Equipo asignado a ubicación técnica correctamente' });
 		} catch (error) {
-			res.status(500).json({ message: 'Error al asignar equipo a ubicación técnica' });
+			res
+				.status(500)
+				.json({ message: 'Error al asignar equipo a ubicación técnica' });
 		}
 	},
 
 	/**
 	 * Asigna una ubicación operacional a un equipo (relación muchos-a-muchos)
 	 *
-	 * Endpoint: POST /api/equipment/assign-operational-location
+	 * Endpoint: POST /api/equipment/assign/operationalLocation/:equipmentId/:operationalLocationId
 	 *
-	 * Recibe en el body:
+	 * Recibe en los params:
 	 * - equipmentId: UUID del equipo
 	 * - operationalLocationId: Código técnico de la ubicación operacional
 	 *
@@ -92,18 +100,25 @@ export const equipmentController = {
 	 * Responde 201 si la asignación es exitosa, 409 si ya existe, 500 si hay error.
 	 */
 	async assignOperationalLocation(req: Request, res: Response) {
-		const { equipmentId, operationalLocationId } = req.body;
+		const { equipmentId, operationalLocationId } = req.params;
 		try {
 			// Verificar si ya existe la relación
-			const existing = await db.select().from(EquipmentOperationalLocation)
+			const existing = await db
+				.select()
+				.from(EquipmentOperationalLocation)
 				.where(
 					and(
 						eq(EquipmentOperationalLocation.equipmentUuid, equipmentId),
-						eq(EquipmentOperationalLocation.locationTechnicalCode, operationalLocationId)
+						eq(
+							EquipmentOperationalLocation.locationTechnicalCode,
+							operationalLocationId
+						)
 					)
 				);
 			if (existing.length > 0) {
-				res.status(409).json({ message: 'La relación equipo-ubicación operacional ya existe' });
+				res.status(409).json({
+					message: 'La relación equipo-ubicación operacional ya existe'
+				});
 			}
 
 			// Insertar la nueva relación
@@ -111,19 +126,61 @@ export const equipmentController = {
 				equipmentUuid: equipmentId,
 				locationTechnicalCode: operationalLocationId
 			});
-			res.status(201).json({ message: 'Equipo asignado a ubicación operacional correctamente' });
+			res.status(201).json({
+				message: 'Equipo asignado a ubicación operacional correctamente'
+			});
 		} catch (error) {
-			res.status(500).json({ message: 'Error al asignar equipo a ubicación operacional' });
+			res
+				.status(500)
+				.json({ message: 'Error al asignar equipo a ubicación operacional' });
 		}
 	},
 
+	/**
+	 * Actualiza la ubicación de transferencia de un equipo
+	 *
+	 * Endpoint: PUT /api/equipment/transfer/:equipmentId/:transferLocationId
+	 *
+	 * Recibe en los params:
+	 * - equipmentId: UUID del equipo
+	 * - transferLocationId: Código técnico de la ubicación de transferencia
+	 *
+	 * Responde 200 si la actualización es exitosa, 500 si hay error.
+	 */
 	async setTransfer(req: Request, res: Response) {
-		const { equipmentId, transferLocationId } = req.body;
+		const { equipmentId, transferLocationId } = req.params;
 		try {
-			await db.update(Equipment).set({ transferLocation: transferLocationId }).where(eq(Equipment.uuid, equipmentId));
-			res.status(200).json({ message: 'Ubicación de transferencia actualizada correctamente' });
+			await db
+				.update(Equipment)
+				.set({ transferLocation: transferLocationId })
+				.where(eq(Equipment.uuid, equipmentId));
+			res.status(200).json({
+				message: 'Ubicación de transferencia actualizada correctamente'
+			});
 		} catch (error) {
-			res.status(500).json({ message: 'Error al actualizar la ubicación de transferencia' });
+			res
+				.status(500)
+				.json({ message: 'Error al actualizar la ubicación de transferencia' });
+		}
+	},
+
+	async getEquipmentOperationalLocations(req: Request, res: Response) {
+		const { equipmentId } = req.params;
+		try {
+			const operationalLocations = await db
+				.select()
+				.from(EquipmentOperationalLocation)
+				.where(eq(EquipmentOperationalLocation.equipmentUuid, equipmentId));
+
+			const locations = operationalLocations.map(
+				(loc) => loc.locationTechnicalCode
+			);
+			res.status(200).json(locations);
+		} catch (error) {
+			res.status(500).json({
+				message: 'Error al obtener ubicaciones operacionales del equipo',
+				details: error.message
+			});
 		}
 	}
-}
+};

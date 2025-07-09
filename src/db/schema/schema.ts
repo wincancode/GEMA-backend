@@ -1,10 +1,10 @@
 /**
  * @fileoverview Esquema de la base de datos para GEMA Backend
- * 
+ *
  * Este archivo define todas las tablas, enums y relaciones de la base de datos
  * usando Drizzle ORM. Incluye la configuración de timestamps automáticos,
  * claves primarias, claves foráneas y restricciones de integridad referencial.
- * 
+ *
  * @author GEMA Development Team
  * @version 1.0.0
  */
@@ -23,7 +23,7 @@ import { sql } from 'drizzle-orm/sql/sql';
 
 /**
  * Configuración de timestamps automáticos para todas las tablas
- * 
+ *
  * - updatedAt: Timestamp de última actualización (se actualiza automáticamente)
  * - createdAt: Timestamp de creación (se establece automáticamente al crear)
  * - deletedAt: Timestamp de eliminación (para soft deletes)
@@ -36,7 +36,7 @@ export const timestamps = {
 
 /**
  * Enum para roles de usuario en el sistema
- * 
+ *
  * Valores disponibles:
  * - user: Usuario básico del sistema
  * - technician: Técnico con permisos especializados
@@ -52,7 +52,7 @@ export const rolesEnum = pgEnum('roles', [
 
 /**
  * Tabla de usuarios del sistema
- * 
+ *
  * Almacena información básica de todos los usuarios incluyendo
  * su rol en el sistema y datos de contacto.
  */
@@ -72,7 +72,7 @@ export const User = pgTable('User', {
 
 /**
  * Enum para especialidades de técnicos
- * 
+ *
  * Define las especialidades disponibles para los técnicos:
  * - Electricidad: Especialidad en sistemas eléctricos
  * - Refrigeracion: Especialidad en sistemas de refrigeración
@@ -82,12 +82,17 @@ export const User = pgTable('User', {
  * - IT: Especialidad en tecnologías de la información
  */
 export const technicianSpecialityEnum = pgEnum('technician_speciality', [
-	'Electricidad', 'Refrigeracion', 'Iluminacion', 'Pintura', 'Protocolo', 'IT'
+	'Electricidad',
+	'Refrigeracion',
+	'Iluminacion',
+	'Pintura',
+	'Protocolo',
+	'IT'
 ]);
 
 /**
  * Tabla de técnicos del sistema
- * 
+ *
  * Extiende la información de usuarios con datos específicos de técnicos
  * como identificación personal, contacto y especialidad.
  */
@@ -115,7 +120,7 @@ export const Technician = pgTable('Technician', {
 
 /**
  * Tabla de equipos técnicos
- * 
+ *
  * Representa grupos de técnicos que trabajan juntos en proyectos
  * o áreas específicas. Puede tener un líder designado.
  */
@@ -137,7 +142,7 @@ export const TechnicalTeam = pgTable('Technical_team', {
 
 /**
  * Tabla de tipos de ubicaciones técnicas
- * 
+ *
  * Define los diferentes tipos de ubicaciones que pueden existir
  * en el sistema (ej: edificio, piso, sala, etc.)
  */
@@ -151,7 +156,7 @@ export const TechnicalLocationTypes = pgTable('Technical_location_types', {
 
 /**
  * Tabla de ubicaciones técnicas
- * 
+ *
  * Representa ubicaciones físicas o lógicas en el sistema
  * con una estructura jerárquica (padre-hijo).
  */
@@ -174,7 +179,7 @@ export const TechnicalLocation = pgTable('Technical_location', {
 
 /**
  * Enum para estados de equipos
- * 
+ *
  * Define los posibles estados en los que puede estar un equipo:
  * - instalado: Equipo instalado y operativo
  * - en_mantenimiento: Equipo en proceso de mantenimiento
@@ -198,7 +203,7 @@ export const EquipmentStateEnum = pgEnum('equipment_state', [
 
 /**
  * Tabla de marcas de equipos
- * 
+ *
  * Almacena las diferentes marcas de equipos disponibles en el sistema.
  */
 export const Brand = pgTable('Brand', {
@@ -208,7 +213,7 @@ export const Brand = pgTable('Brand', {
 
 /**
  * Tabla de equipos
- * 
+ *
  * Representa todos los equipos del sistema con su información
  * técnica, ubicación y estado actual.
  */
@@ -244,7 +249,7 @@ export const Equipment = pgTable('Equipment', {
 
 /**
  * Tabla de ubicaciones operacionales de equipos
- * 
+ *
  * Tabla de relación muchos a muchos entre equipos y ubicaciones
  * que permite rastrear el historial de ubicaciones de cada equipo.
  */
@@ -275,7 +280,7 @@ export const EquipmentOperationalLocation = pgTable(
 
 /**
  * Enum para fuentes de origen de reportes
- * 
+ *
  * Define las diferentes fuentes desde donde pueden originarse los reportes:
  * - email: Reporte originado por email
  * - managementSystem: Reporte originado desde sistema de gestión
@@ -291,7 +296,7 @@ export const ReportOriginSourceEnum = pgEnum('Report_Origin_Source', [
 
 /**
  * Tabla de orígenes de reportes
- * 
+ *
  * Almacena información sobre el origen de cada reporte,
  * incluyendo quién lo creó y desde qué fuente.
  */
@@ -306,7 +311,7 @@ export const ReportOrigin = pgTable('Report_Origin', {
 
 /**
  * Enum para prioridades de reportes
- * 
+ *
  * Define los niveles de prioridad para los reportes:
  * - high: Prioridad alta
  * - medium: Prioridad media
@@ -320,7 +325,7 @@ export const reportPriorityEnum = pgEnum('report_priority', [
 
 /**
  * Enum para tipos de reportes
- * 
+ *
  * Define los tipos de reportes disponibles:
  * - preventive: Reporte preventivo
  * - active: Reporte activo/correctivo
@@ -329,7 +334,7 @@ export const reportTypeEnum = pgEnum('report_type', ['preventive', 'active']);
 
 /**
  * Enum para estados de reportes
- * 
+ *
  * Define los posibles estados de un reporte:
  * - pending: Reporte pendiente de revisión
  * - programmed: Reporte programado para ejecución
@@ -347,7 +352,7 @@ export const reportStateEnum = pgEnum('report_state', [
 
 /**
  * Tabla de reportes
- * 
+ *
  * Almacena todos los reportes del sistema con su información
  * básica, prioridad, estado y tipo.
  */
@@ -364,7 +369,7 @@ export const Report = pgTable('Report', {
 
 /**
  * Tabla de actualizaciones de reportes
- * 
+ *
  * Almacena el historial de actualizaciones y comentarios
  * realizados sobre cada reporte.
  */
