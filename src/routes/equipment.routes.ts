@@ -130,4 +130,10 @@ router.put('/:uuid', equipmentController.update);
  */
 router.delete('/:uuid', equipmentController.delete);
 
+router.put('/assign/technicalLocation/:equipmentId/:technicalLocationId', equipmentController.assignTechnicalLocation);
+
+router.post('/assign/operationalLocation/:equipmentId/:operationalLocationId', equipmentController.assignOperationalLocation);
+
+router.put('/transfer/:equipmentId/:transferLocationId', equipmentController.setTransfer);
+
 export default router;
